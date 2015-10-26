@@ -1,0 +1,2 @@
+persist.sys.timeadjust         u:object_r:timekeep_prop:s0
+persist.tareset.notfirstboot          u:object_r:updatemiscta_prop:s0
