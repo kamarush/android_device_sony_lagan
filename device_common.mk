@@ -204,4 +204,28 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_COPY_FILES += \
     $(SONY_ROOT)/sbin/wait4tad_static:root/sbin/wait4tad_static
 
+# QC Perf
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.vendor.extension_library=/vendor/lib/libqti-perfd-client.so
+
+# RIL
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.telephony.ril_class=SonyRIL
+
+# Offline charging animation
+PRODUCT_COPY_FILES += \
+     device/sony/lagan/animations/charging_animation_01.png:system/semc/chargemon/data/charging_animation_01.png \
+     device/sony/lagan/animations/charging_animation_02.png:system/semc/chargemon/data/charging_animation_02.png \
+     device/sony/lagan/animations/charging_animation_03.png:system/semc/chargemon/data/charging_animation_03.png \
+     device/sony/lagan/animations/charging_animation_04.png:system/semc/chargemon/data/charging_animation_04.png \
+     device/sony/lagan/animations/charging_animation_05.png:system/semc/chargemon/data/charging_animation_05.png \
+     device/sony/lagan/animations/charging_animation_06.png:system/semc/chargemon/data/charging_animation_06.png \
+     device/sony/lagan/animations/charging_animation_07.png:system/semc/chargemon/data/charging_animation_07.png \
+     device/sony/lagan/animations/non-charging_animation_01.png:system/semc/chargemon/data/non-charging_animation_01.png \
+     device/sony/lagan/animations/non-charging_animation_02.png:system/semc/chargemon/data/non-charging_animation_02.png \
+     device/sony/lagan/animations/non-charging_animation_03.png:system/semc/chargemon/data/non-charging_animation_03.png \
+     device/sony/lagan/animations/non-charging_animation_04.png:system/semc/chargemon/data/non-charging_animation_04.png \
+     device/sony/lagan/animations/non-charging_animation_05.png:system/semc/chargemon/data/non-charging_animation_05.png \
+     device/sony/lagan/animations/non-charging_animation_06.png:system/semc/chargemon/data/non-charging_animation_06.png \
+     device/sony/lagan/animations/non-charging_animation_07.png:system/semc/chargemon/data/non-charging_animation_07.png
 

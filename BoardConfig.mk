@@ -103,6 +103,10 @@ EXTENDED_FONT_FOOTPRINT := true
 
 MALLOC_IMPL := dlmalloc
 
+# RIL
+BOARD_PROVIDES_LIBRIL := true
+BOARD_RIL_CLASS := ../../../device/sony/lagan/ril/
+
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
 
@@ -110,6 +114,8 @@ BOARD_SEPOLICY_DIRS += \
     device/sony/lagan/sepolicy
 
 BOARD_SEPOLICY_UNION += \
+    file_contexts \
+    property_contexts \
     device.te \
     file.te \
     illumination.te \
@@ -118,18 +124,20 @@ BOARD_SEPOLICY_UNION += \
     mac_update.te \
     mdm_helper.te \
     mediaserver.te \
+    mpdecision.te \
     property.te \
+    radio.te \
+    recovery.te \
+    system_server.te \
     sct.te \
     sensors.te \
     service.te \
-    system_app.te \
-    system_server.te \
-    tad.te \
-    ta_qmi.te \
-    thermanager.te \
-    updatemiscta.te \
-    timekeep.te \
-    file_contexts \
-    property_contexts \
     service_contexts \
-    wpa.te \
+    system_app.te \
+    tad.te \
+    ta_qmi_client.te \
+    timekeep.te \
+    thermanager.te \
+    untrusted_app.te \
+    updatemiscta.te \
+    wpa.te
