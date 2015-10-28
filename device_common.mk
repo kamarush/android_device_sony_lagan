@@ -83,24 +83,30 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(SONY_ROOT)/system/etc/kickstart_checker.sh:system/etc/kickstart_checker.sh
 
+# Offline charging animation
+PRODUCT_COPY_FILES += \
+     device/sony/lagan/animations/charging_animation_01.png:system/semc/chargemon/data/charging_animation_01.png \
+     device/sony/lagan/animations/charging_animation_02.png:system/semc/chargemon/data/charging_animation_02.png \
+     device/sony/lagan/animations/charging_animation_03.png:system/semc/chargemon/data/charging_animation_03.png \
+     device/sony/lagan/animations/charging_animation_04.png:system/semc/chargemon/data/charging_animation_04.png \
+     device/sony/lagan/animations/charging_animation_05.png:system/semc/chargemon/data/charging_animation_05.png \
+     device/sony/lagan/animations/charging_animation_06.png:system/semc/chargemon/data/charging_animation_06.png \
+     device/sony/lagan/animations/charging_animation_07.png:system/semc/chargemon/data/charging_animation_07.png \
+     device/sony/lagan/animations/non-charging_animation_01.png:system/semc/chargemon/data/non-charging_animation_01.png \
+     device/sony/lagan/animations/non-charging_animation_02.png:system/semc/chargemon/data/non-charging_animation_02.png \
+     device/sony/lagan/animations/non-charging_animation_03.png:system/semc/chargemon/data/non-charging_animation_03.png \
+     device/sony/lagan/animations/non-charging_animation_04.png:system/semc/chargemon/data/non-charging_animation_04.png \
+     device/sony/lagan/animations/non-charging_animation_05.png:system/semc/chargemon/data/non-charging_animation_05.png \
+     device/sony/lagan/animations/non-charging_animation_06.png:system/semc/chargemon/data/non-charging_animation_06.png \
+     device/sony/lagan/animations/non-charging_animation_07.png:system/semc/chargemon/data/non-charging_animation_07.png
+
 # Audio
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
     audio.primary.msm8960 \
     audio.r_submix.default \
     audio.usb.default \
-    libaudio-resampler \
-    libacdbloader \
-    libacdbmapper \
-    libaudcal \
-    libaudioalsa \
-    libdiag
-
-# For audio.primary.msm8960
-PRODUCT_PACKAGES += \
-    libtinyalsa \
-    libtinycompress \
-    libaudioroute
+    libaudio-resampler
 
 # GFX
 PRODUCT_PACKAGES += \
@@ -150,18 +156,6 @@ PRODUCT_PACKAGES += \
     wpa_supplicant.conf \
     p2p_supplicant.conf
 
-# Sensors
-PRODUCT_PACKAGES += \
-    sensors.default
-
-# Misc
-PRODUCT_PACKAGES += \
-    libmiscta \
-    libta \
-    tad_static \
-    ta_qmi_client \
-    ta2bin
-
 # OSS
 PRODUCT_PACKAGES += \
     timekeep \
@@ -175,12 +169,8 @@ PRODUCT_PACKAGES += \
     charger_res_images
 
 PRODUCT_PACKAGES += \
-    rmt_storage
-
-PRODUCT_PACKAGES += \
     Email \
     Stk \
-    InCallUI \
     Launcher3
 
 # Platform specific tags
@@ -211,21 +201,4 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.ril_class=SonyRIL
-
-# Offline charging animation
-PRODUCT_COPY_FILES += \
-     device/sony/lagan/animations/charging_animation_01.png:system/semc/chargemon/data/charging_animation_01.png \
-     device/sony/lagan/animations/charging_animation_02.png:system/semc/chargemon/data/charging_animation_02.png \
-     device/sony/lagan/animations/charging_animation_03.png:system/semc/chargemon/data/charging_animation_03.png \
-     device/sony/lagan/animations/charging_animation_04.png:system/semc/chargemon/data/charging_animation_04.png \
-     device/sony/lagan/animations/charging_animation_05.png:system/semc/chargemon/data/charging_animation_05.png \
-     device/sony/lagan/animations/charging_animation_06.png:system/semc/chargemon/data/charging_animation_06.png \
-     device/sony/lagan/animations/charging_animation_07.png:system/semc/chargemon/data/charging_animation_07.png \
-     device/sony/lagan/animations/non-charging_animation_01.png:system/semc/chargemon/data/non-charging_animation_01.png \
-     device/sony/lagan/animations/non-charging_animation_02.png:system/semc/chargemon/data/non-charging_animation_02.png \
-     device/sony/lagan/animations/non-charging_animation_03.png:system/semc/chargemon/data/non-charging_animation_03.png \
-     device/sony/lagan/animations/non-charging_animation_04.png:system/semc/chargemon/data/non-charging_animation_04.png \
-     device/sony/lagan/animations/non-charging_animation_05.png:system/semc/chargemon/data/non-charging_animation_05.png \
-     device/sony/lagan/animations/non-charging_animation_06.png:system/semc/chargemon/data/non-charging_animation_06.png \
-     device/sony/lagan/animations/non-charging_animation_07.png:system/semc/chargemon/data/non-charging_animation_07.png
 
