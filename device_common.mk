@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SOMC_PLATFORM := fusion3
-
 DEVICE_PACKAGE_OVERLAYS += \
     device/sony/lagan/overlay
 
 SONY_ROOT = device/sony/lagan/rootdir
+
 PRODUCT_COPY_FILES += \
     $(SONY_ROOT)/fstab.lagan:root/fstab.lagan \
     $(SONY_ROOT)/init.lagan.rc:root/init.lagan.rc \
@@ -100,13 +99,26 @@ PRODUCT_COPY_FILES += \
      device/sony/lagan/animations/non-charging_animation_06.png:system/semc/chargemon/data/non-charging_animation_06.png \
      device/sony/lagan/animations/non-charging_animation_07.png:system/semc/chargemon/data/non-charging_animation_07.png
 
+PRODUCT_PROPERTY_OVERRIDES += \
+	persist.audio.handset.mic.type=digital \
+	persist.audio.dualmic.config=endfire \
+	persist.audio.fluence.voicecall=true \
+	persist.audio.handset.mic=dmic \
+	persist.audio.fluence.mode=endfire \
+	persist.audio.lowlatency.rec=false
+
 # Audio
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
     audio.primary.msm8960 \
     audio.r_submix.default \
     audio.usb.default \
-    libaudio-resampler
+    libaudio-resampler \
+    tinymix
+
+# BT
+PRODUCT_PACKAGES += \
+    hci_qcomm_init
 
 # GFX
 PRODUCT_PACKAGES += \
@@ -115,11 +127,13 @@ PRODUCT_PACKAGES += \
     hwcomposer.msm8960 \
     memtrack.msm8960 \
     libgenlock \
+    liboverlay \
     libqdutils \
     libqdMetaData
 
 # OMX
 PRODUCT_PACKAGES += \
+	libdivxdrmdecrypt \
     libc2dcolorconvert \
     libstagefrighthw \
     libOmxCore \
@@ -129,7 +143,8 @@ PRODUCT_PACKAGES += \
 
 # Lights
 PRODUCT_PACKAGES += \
-    lights.lagan
+    lights.lagan \
+    liblights-core
 
 # NFC
 PRODUCT_PACKAGES += \
@@ -165,7 +180,6 @@ PRODUCT_PACKAGES += \
 
 # Charger
 PRODUCT_PACKAGES += \
-    charger \
     charger_res_images
 
 PRODUCT_PACKAGES += \
@@ -177,9 +191,21 @@ PRODUCT_PACKAGES += \
 #
 PRODUCT_TAGS += dalvik.gc.type-precise
 
+PRODUCT_PACKAGES += \
+	librs_jni \
+	com.android.future.usb.accessory
+
+# Filesystem management tools
+PRODUCT_PACKAGES += \
+	e2fsck
+
 # APN list
 PRODUCT_COPY_FILES += \
     device/sample/etc/apns-full-conf.xml:system/etc/apns-conf.xml
+
+# Do not power down SIM card when modem is sent to Low Power Mode.
+PRODUCT_PROPERTY_OVERRIDES += \
+	persist.radio.apm_sim_not_pwdn=1
 
 # Bluetooth
 PRODUCT_PROPERTY_OVERRIDES += \
