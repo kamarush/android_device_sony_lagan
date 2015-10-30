@@ -156,10 +156,9 @@ PRODUCT_PACKAGES += \
 
 # GPS
 PRODUCT_PACKAGES += \
-    libloc_api_v02 \
-    libloc_adapter \
-    libloc_eng \
     libgps.utils \
+    libloc_core \
+    libloc_eng \
     gps.msm8960
 
 # Wifi
