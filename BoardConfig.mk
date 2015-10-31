@@ -95,8 +95,12 @@ BOARD_USE_SONY_MACUPDATE := true
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := $(TARGET_BOARD_PLATFORM)
 TARGET_NO_RPC := true
 
-# Charger
+# Healthd
 BOARD_CHARGER_ENABLE_SUSPEND := true
+BACKLIGHT_PATH := /sys/class/leds/lm3533-lcd-bl/brightness
+RED_LED_PATH := /sys/class/leds/lm3533-red/brightness
+GREEN_LED_PATH := /sys/class/leds/lm3533-green/brightness
+BLUE_LED_PATH := /sys/class/leds/lm3533-blue/brightness
 
 # Include an expanded selection of fonts
 EXTENDED_FONT_FOOTPRINT := true

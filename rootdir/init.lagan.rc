@@ -13,7 +13,8 @@
 # limitations under the License.
 
 import init.lagan.usb.rc
-import init.device.rc
+import init.sony.rc
+import init.sony-device.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
@@ -265,10 +266,6 @@ on post-fs-data
     chown system system /sys/devices/platform/msm_sdcc.3/polling
     chown system system /sys/devices/platform/msm_sdcc.4/polling
 
-    # Owner for the proximity sensor
-    chown system system /sys/devices/i2c-2/2-0054/threshold
-    chown system system /sys/devices/i2c-2/2-0054/nburst
-
     mkdir /data/system 0775 system system
 
     # Create directories for gpsone_daemon services
@@ -304,38 +301,7 @@ on post-fs-data
     write /sys/devices/system/cpu/cpu2/online 1
     write /sys/devices/system/cpu/cpu3/online 1
 
-    # Camera and torch permissions
     mkdir /data/camera 0771 root camera
-    chown media system /sys/bus/i2c/devices/0-0053/torch_enable
-    chown media system /sys/bus/i2c/devices/0-0053/torch_current
-    chown media system /sys/bus/i2c/devices/0-0053/privacy_enable
-    chown media system /sys/bus/i2c/devices/0-0053/privacy_current
-    chown media system /sys/bus/i2c/devices/0-0053/flash_enable
-    chown media system /sys/bus/i2c/devices/0-0053/flash_duration
-    chown media system /sys/bus/i2c/devices/0-0053/flash_synchronization
-    chown media system /sys/bus/i2c/devices/0-0053/flash_current
-    chown media system /sys/bus/i2c/devices/0-0053/status
-
-    # Camera/Libals
-    chown media input /dev/input/event11
-
-    # liblights
-    chown root system /sys/devices/i2c-0/0-0036/leds/lm3533-lcd-bl/brightness
-    chown root system /sys/devices/i2c-0/0-0036/leds/lm3533-red/brightness
-    chown root system /sys/devices/i2c-0/0-0036/leds/lm3533-green/brightness
-    chown root system /sys/devices/i2c-0/0-0036/leds/lm3533-blue/brightness
-    chown root system /sys/devices/i2c-0/0-0036/leds/lm3533-red/pattern
-    chown root system /sys/devices/i2c-0/0-0036/leds/lm3533-green/pattern
-    chown root system /sys/devices/i2c-0/0-0036/leds/lm3533-blue/pattern
-    chown root system /sys/devices/i2c-0/0-0036/sync_lvbanks
-    chmod 0660 /sys/devices/i2c-0/0-0036/leds/lm3533-lcd-bl/brightness
-    chmod 0660 /sys/devices/i2c-0/0-0036/leds/lm3533-red/brightness
-    chmod 0660 /sys/devices/i2c-0/0-0036/leds/lm3533-green/brightness
-    chmod 0660 /sys/devices/i2c-0/0-0036/leds/lm3533-blue/brightness
-    chmod 0660 /sys/devices/i2c-0/0-0036/leds/lm3533-red/pattern
-    chmod 0660 /sys/devices/i2c-0/0-0036/leds/lm3533-green/pattern
-    chmod 0660 /sys/devices/i2c-0/0-0036/leds/lm3533-blue/pattern
-    chmod 0660 /sys/devices/i2c-0/0-0036/sync_lvbanks
 
     # Create the symlink to qcn wpa_supplicant folder for ar6000 wpa_supplicant
     mkdir /data/system 0775 system system

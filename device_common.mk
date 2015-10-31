@@ -21,7 +21,8 @@ PRODUCT_COPY_FILES += \
     $(SONY_ROOT)/fstab.lagan:root/fstab.lagan \
     $(SONY_ROOT)/init.lagan.rc:root/init.lagan.rc \
     $(SONY_ROOT)/init.lagan.usb.rc:root/init.lagan.usb.rc \
-    $(SONY_ROOT)/init.device.rc:root/init.device.rc \
+    $(SONY_ROOT)/init.sony.rc:root/init.sony.rc \
+    $(SONY_ROOT)/init.sony-device.rc:root/init.sony-device.rc \
     $(SONY_ROOT)/ueventd.lagan.rc:root/ueventd.lagan.rc
 
 # Copy system files
@@ -143,8 +144,7 @@ PRODUCT_PACKAGES += \
 
 # Lights
 PRODUCT_PACKAGES += \
-    lights.lagan \
-    liblights-core
+    lights.lagan
 
 # NFC
 PRODUCT_PACKAGES += \
