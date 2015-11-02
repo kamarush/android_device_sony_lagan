@@ -49,8 +49,13 @@ TARGET_SYSTEM_PROP := device/sony/lagan/system.prop
 
 # Enable dex-preoptimization to speed up first boot sequence
 ifeq ($(HOST_OS),linux)
-    WITH_DEXPREOPT ?= true
+  ifeq ($(TARGET_BUILD_VARIANT),user)
+    ifeq ($(WITH_DEXPREOPT),)
+      WITH_DEXPREOPT := true
+    endif
+  endif
 endif
+WITH_DEXPREOPT_BOOT_IMG_ONLY ?= true
 
 # Dumpstate
 BOARD_LIB_DUMPSTATE := libdumpstate.sony
