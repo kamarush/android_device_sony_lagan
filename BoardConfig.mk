@@ -116,6 +116,9 @@ MALLOC_IMPL := dlmalloc
 BOARD_PROVIDES_LIBRIL := true
 BOARD_RIL_CLASS := ../../../device/sony/lagan/ril/
 
+# Opengapps
+OPENGAPPS_VARIANT := micro
+
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
 
