@@ -25,30 +25,8 @@ on init
     mount tmpfs tmpfs /tmp nosuid mode=0755,uid=0,gid=0
     symlink /dev/socket /tmp
 
-    # See storage config details at http://source.android.com/tech/storage/
-    mkdir /mnt/shell/emulated 0700 shell shell
-    mkdir /storage/emulated 0555 root root
-
-    mkdir /mnt/media_rw/sdcard1 0775 media_rw media_rw
-    mkdir /mnt/media_rw/usbdisk 0775 media_rw media_rw
-    mkdir /mnt/media_rw/usbotg 0775 media_rw media_rw
-
-    mkdir /storage/sdcard1 0775 system system
-    mkdir /storage/usbdisk 0775 system system
-    mkdir /storage/usbotg 0775 system system
-
-    export EXTERNAL_STORAGE /storage/emulated/legacy
-    export SECONDARY_STORAGE /storage/sdcard1
-    export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
-    export EMULATED_STORAGE_TARGET /storage/emulated
-
-    # Support legacy paths
-    symlink /storage/emulated/legacy /sdcard
-    symlink /storage/emulated/legacy /mnt/sdcard
-    symlink /storage/emulated/legacy /storage/sdcard0
-    symlink /mnt/shell/emulated/0 /storage/emulated/legacy
-    symlink /storage/usbdisk /usbdisk
-    symlink /storage/usbdisk /mnt/usbdisk
+    symlink /sdcard /mnt/sdcard
+    symlink /sdcard /storage/sdcard0
 
     mkdir /dev/bus 0755 root root
     mkdir /dev/bus/usb 0755 root root
@@ -59,7 +37,6 @@ on init
 
 on fs
     mount_all ./fstab.lagan
-    setprop ro.crypto.fuse_sdcard true
 
     mkdir /lta-label 0555 system system
     wait /dev/block/platform/msm_sdcc.1/by-name/LTALabel
@@ -229,11 +206,6 @@ on boot
     write /proc/sys/kernel/dmesg_restrict 0
 
 on post-fs-data
-    # MSM specific files that need to be created on /data
-    # We will remap this as /mnt/sdcard with the sdcard fuse tool
-    mkdir /data/media 0775 media_rw media_rw
-    chown media_rw media_rw /data/media
-
     # to observe dnsmasq.leases file for dhcp information of soft ap.
     chown dhcp system /data/misc/dhcp
 
@@ -454,17 +426,6 @@ service dhcpcd_bt-pan /system/bin/dhcpcd -BKLG
 service iprenew_bt-pan /system/bin/dhcpcd -n
     disabled
     oneshot
-
-service sdcard /system/bin/sdcard -u 1023 -g 1023 -t 4 -l /data/media /mnt/shell/emulated
-    class late_start
-
-service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -t 4 -d /mnt/media_rw/sdcard1 /storage/sdcard1
-    class late_start
-    disabled
-
-service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -w 1023 -t 4 -d /mnt/media_rw/usbdisk /storage/usbdisk
-    class late_start
-    disabled
 
 on property:init.svc.wpa_supplicant=stopped
     stop dhcpcd
