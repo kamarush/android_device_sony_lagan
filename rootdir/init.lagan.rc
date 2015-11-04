@@ -21,15 +21,12 @@ on early-init
     symlink /data/tombstones /tombstones
 
 on init
-    mkdir /tmp
-    mount tmpfs tmpfs /tmp nosuid mode=0755,uid=0,gid=0
-    symlink /dev/socket /tmp
-
-    symlink /sdcard /mnt/sdcard
-    symlink /sdcard /storage/sdcard0
-
     mkdir /dev/bus 0755 root root
     mkdir /dev/bus/usb 0755 root root
+
+    # Support legacy paths
+    symlink /sdcard /mnt/sdcard
+    symlink /sdcard /storage/sdcard0
 
     write /sys/module/subsystem_restart/parameters/restart_level 3
     write /sys/module/subsystem_restart/parameters/max_restarts 8
