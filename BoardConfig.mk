@@ -38,7 +38,7 @@ BOARD_RAMDISK_OFFSET     := 0x02000000
 BOARD_KERNEL_BOOTIMG := true
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 
-BOARD_KERNEL_CMDLINE := androidboot.hardware=lagan user_debug=31 msm_rtb.filter=0x3F ehci-hcd.park=3 vmalloc=400M
+BOARD_KERNEL_CMDLINE := androidboot.hardware=lagan user_debug=31 msm_rtb.filter=0x3F ehci-hcd.park=3 vmalloc=400M androidboot.selinux=permissive
 
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
@@ -46,6 +46,9 @@ TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 131072
 TARGET_SYSTEM_PROP := device/sony/lagan/system.prop
+
+# Vold
+TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/msm_hsusb/gadget/lun%d/file
 
 # Enable dex-preoptimization to speed up first boot sequence
 ifeq ($(HOST_OS),linux)
@@ -71,6 +74,9 @@ TARGET_USES_C2D_COMPOSITION := true
 USE_OPENGL_RENDERER := true
 USE_DEVICE_SPECIFIC_CAMERA := true
 BOARD_EGL_CFG := device/sony/lagan/rootdir/system/lib/egl/egl.cfg
+
+OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
+HAVE_ADRENO_SOURCE := false
 
 # Wi-Fi definitions for Qualcomm solution
 BOARD_HAS_QCOM_WLAN := true
@@ -114,8 +120,8 @@ EXTENDED_FONT_FOOTPRINT := true
 MALLOC_IMPL := dlmalloc
 
 # RIL
-BOARD_PROVIDES_LIBRIL := true
-BOARD_RIL_CLASS := ../../../device/sony/lagan/ril/
+#BOARD_PROVIDES_LIBRIL := true
+#BOARD_RIL_CLASS := ../../../device/sony/lagan/ril/
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
