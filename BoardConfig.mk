@@ -70,6 +70,10 @@ TARGET_USES_SF_BYPASS := true
 TARGET_USES_C2D_COMPOSITION := true
 USE_OPENGL_RENDERER := true
 USE_DEVICE_SPECIFIC_CAMERA := true
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
+OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
+HAVE_ADRENO_SOURCE := false
+
 BOARD_EGL_CFG := device/sony/lagan/rootdir/system/lib/egl/egl.cfg
 
 # Wi-Fi definitions for Qualcomm solution
@@ -117,7 +121,7 @@ BOARD_PROVIDES_LIBRIL := true
 BOARD_RIL_CLASS := ../../../device/sony/lagan/ril/
 
 # Opengapps
-OPENGAPPS_VARIANT := micro
+GAPPS_VARIANT := micro
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk

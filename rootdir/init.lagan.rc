@@ -310,6 +310,10 @@ on post-fs-data
     mkdir /cache/qcks 0770 system system
     chown system /dev/block/platform/msm_sdcc.1/by-name
 
+    # Display calibration
+    chown system system /sys/devices/virtual/graphics/fb0/rgb
+    chmod 0660 /sys/devices/virtual/graphics/fb0/rgb
+
     # Permissions for mpdecision and thermald
     mkdir /dev/socket/mpdecision 0770 system system
     chmod 2770 /dev/socket/mpdecision
