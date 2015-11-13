@@ -29,9 +29,9 @@ on init
     mkdir /mnt/shell/emulated 0700 shell shell
     mkdir /storage/emulated 0555 root root
 
-    mkdir /mnt/media_rw/sdcard1 0775 media_rw media_rw
-    mkdir /mnt/media_rw/usbdisk 0775 media_rw media_rw
-    mkdir /mnt/media_rw/usbotg 0775 media_rw media_rw
+    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
+    mkdir /mnt/media_rw/usbdisk 0700 media_rw media_rw
+    mkdir /mnt/media_rw/usbotg 0700 media_rw media_rw
 
     mkdir /storage/sdcard1 0775 system system
     mkdir /storage/usbdisk 0775 system system
@@ -47,6 +47,8 @@ on init
     symlink /storage/emulated/legacy /mnt/sdcard
     symlink /storage/emulated/legacy /storage/sdcard0
     symlink /mnt/shell/emulated/0 /storage/emulated/legacy
+    symlink /storage/sdcard1 /ext_card
+    symlink /storage/sdcard1 /mnt/ext_card
     symlink /storage/usbdisk /usbdisk
     symlink /storage/usbdisk /mnt/usbdisk
 
@@ -216,11 +218,6 @@ on boot
     # an ack packet comes out of order
     write /proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal 1
 
-    # NFC
-    # Local data and nfcee xml storage
-    mkdir /data/nfc 0770 nfc nfc
-    mkdir /data/nfc/param 0770 nfc nfc
-
     # Set the console loglevel to < KERN_INFO
     # Set the default message loglevel to KERN_INFO
     write /proc/sys/kernel/printk "6 6 1 7"
@@ -233,6 +230,11 @@ on post-fs-data
     # We will remap this as /mnt/sdcard with the sdcard fuse tool
     mkdir /data/media 0775 media_rw media_rw
     chown media_rw media_rw /data/media
+
+    # NFC
+    # Local data and nfcee xml storage
+    mkdir /data/nfc 0770 nfc nfc
+    mkdir /data/nfc/param 0770 nfc nfc
 
     # to observe dnsmasq.leases file for dhcp information of soft ap.
     chown dhcp system /data/misc/dhcp
@@ -295,6 +297,18 @@ on post-fs-data
     write /sys/module/pm_8x60/modes/cpu2/power_collapse/suspend_enabled 1
     write /sys/module/pm_8x60/modes/cpu3/power_collapse/suspend_enabled 1
     write /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "ondemand"
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor "ondemand"
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "ondemand"
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor "ondemand"
+    write /sys/devices/system/cpu/cpufreq/ondemand/up_threshold 90
+    write /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate 50000
+    write /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy 1
+    write /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor 4
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 384000
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 384000
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 384000
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 384000
 
     # boot up with all 4 CPUs in performance mode
     write /sys/devices/system/cpu/cpu1/online 1
@@ -309,10 +323,6 @@ on post-fs-data
     # kickstart
     mkdir /cache/qcks 0770 system system
     chown system /dev/block/platform/msm_sdcc.1/by-name
-
-    # Display calibration
-    chown system system /sys/devices/virtual/graphics/fb0/rgb
-    chmod 0660 /sys/devices/virtual/graphics/fb0/rgb
 
     # Permissions for mpdecision and thermald
     mkdir /dev/socket/mpdecision 0770 system system
