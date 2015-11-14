@@ -188,6 +188,9 @@ PRODUCT_PACKAGES += \
     Stk \
     Launcher3
 
+PRODUCT_PACKAGES += \
+    libstlport
+
 # Platform specific tags
 #
 PRODUCT_TAGS += dalvik.gc.type-precise
