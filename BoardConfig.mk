@@ -119,10 +119,6 @@ EXTENDED_FONT_FOOTPRINT := true
 
 MALLOC_IMPL := dlmalloc
 
-# RIL
-#BOARD_PROVIDES_LIBRIL := true
-#BOARD_RIL_CLASS := ../../../device/sony/lagan/ril/
-
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
 

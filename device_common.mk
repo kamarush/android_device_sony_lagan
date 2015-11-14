@@ -224,7 +224,3 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.extension_library=/vendor/lib/libqti-perfd-client.so
 
-# RIL
-#PRODUCT_PROPERTY_OVERRIDES += \
-#    ro.telephony.ril_class=SonyRIL
-
