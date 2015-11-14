@@ -186,7 +186,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     Email \
     Stk \
-    Launcher3
+    Launcher3 \
+    messaging
 
 PRODUCT_PACKAGES += \
     libstlport
