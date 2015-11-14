@@ -152,6 +152,7 @@ PRODUCT_PACKAGES += \
     com.android.nfc_extras \
     libnfc_jni \
     libnfc \
+    nfc.lagan \
     Nfc \
     Tag
 
