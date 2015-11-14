@@ -119,6 +119,9 @@ EXTENDED_FONT_FOOTPRINT := true
 
 MALLOC_IMPL := dlmalloc
 
+# Enable Minikin text layout engine (will be the default soon)
+USE_MINIKIN := true
+
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
 
