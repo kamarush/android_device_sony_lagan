@@ -226,6 +226,10 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     media.aac_51_output_enabled=true
 
+# RIL
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.telephony.ril_class=SonyRIL
+
 # Additional sbin stuff
 PRODUCT_COPY_FILES += \
     $(SONY_ROOT)/sbin/wait4tad_static:root/sbin/wait4tad_static

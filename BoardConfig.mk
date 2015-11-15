@@ -122,6 +122,10 @@ MALLOC_IMPL := dlmalloc
 # Enable Minikin text layout engine (will be the default soon)
 USE_MINIKIN := true
 
+# RIL
+BOARD_PROVIDES_LIBRIL := true
+BOARD_RIL_CLASS := ../../../device/sony/lagan/ril/
+
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
 
