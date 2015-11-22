@@ -52,13 +52,8 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/msm_hsusb/gadget/lun%d/
 
 # Enable dex-preoptimization to speed up first boot sequence
 ifeq ($(HOST_OS),linux)
-  ifeq ($(TARGET_BUILD_VARIANT),user)
-    ifeq ($(WITH_DEXPREOPT),)
-      WITH_DEXPREOPT := true
-    endif
-  endif
+    WITH_DEXPREOPT ?= true
 endif
-WITH_DEXPREOPT_BOOT_IMG_ONLY ?= true
 
 # Dumpstate
 BOARD_LIB_DUMPSTATE := libdumpstate.sony
