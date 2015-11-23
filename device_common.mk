@@ -216,6 +216,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
 
+# DRM Service
+PRODUCT_PROPERTY_OVERRIDES += \
+	drm.service.enabled=true
+
 # Additional sbin stuff
 PRODUCT_COPY_FILES += \
     $(SONY_ROOT)/sbin/wait4tad_static:root/sbin/wait4tad_static
