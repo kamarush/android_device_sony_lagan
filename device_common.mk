@@ -21,6 +21,7 @@ PRODUCT_COPY_FILES += \
     $(SONY_ROOT)/fstab.lagan:root/fstab.lagan \
     $(SONY_ROOT)/init.lagan.rc:root/init.lagan.rc \
     $(SONY_ROOT)/init.lagan.usb.rc:root/init.lagan.usb.rc \
+	$(SONY_ROOT)/init.lagan.pwr.rc:root/init.lagan.pwr.rc \
     $(SONY_ROOT)/init.sony.rc:root/init.sony.rc \
     $(SONY_ROOT)/init.sony-device.rc:root/init.sony-device.rc \
     $(SONY_ROOT)/ueventd.lagan.rc:root/ueventd.lagan.rc

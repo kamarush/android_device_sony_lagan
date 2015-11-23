@@ -15,6 +15,7 @@
 import init.lagan.usb.rc
 import init.sony.rc
 import init.sony-device.rc
+import init.lagan.pwr.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
@@ -268,6 +269,22 @@ on post-fs-data
     chown system system /sys/devices/platform/msm_sdcc.3/polling
     chown system system /sys/devices/platform/msm_sdcc.4/polling
 
+	chown system system /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/pwrscale/policy
+
+    # Permissions for mpdecision and thermald
+	mkdir /dev/socket/mpdecision 2770 root system
+
+    # Kgsl governors
+    chown root system /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/pwrscale/policy
+    chmod 0664 /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/pwrscale/policy
+    chown root system /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/pwrscale/policy_config/conservative/polling_interval
+    chmod 0664 /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/pwrscale/policy_config/conservative/polling_interval
+
+    # Chown cpu online files as needed for the Settings app
+    chown root system /sys/devices/system/cpu/cpu1/online
+    chown root system /sys/devices/system/cpu/cpu2/online
+    chown root system /sys/devices/system/cpu/cpu3/online
+
     mkdir /data/system 0775 system system
 
     # Create directories for gpsone_daemon services
@@ -287,22 +304,6 @@ on post-fs-data
     # Enable the setgid bit on the directory
     mkdir /data/audio 0770 media audio
 
-    # Enable Power modes and set the CPU Freq Sampling rates
-    write /sys/module/rpm_resources/enable_low_power/L2_cache 1
-    write /sys/module/rpm_resources/enable_low_power/pxo 1
-    write /sys/module/rpm_resources/enable_low_power/vdd_dig 1
-    write /sys/module/rpm_resources/enable_low_power/vdd_mem 1
-    write /sys/module/pm_8x60/modes/cpu0/power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu1/power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu2/power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu3/power_collapse/suspend_enabled 1
-    write /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled 1
-
-    # boot up with all 4 CPUs in performance mode
-    write /sys/devices/system/cpu/cpu1/online 1
-    write /sys/devices/system/cpu/cpu2/online 1
-    write /sys/devices/system/cpu/cpu3/online 1
-
     mkdir /data/camera 0771 root camera
 
     # Create the symlink to qcn wpa_supplicant folder for ar6000 wpa_supplicant
@@ -311,10 +312,6 @@ on post-fs-data
     # kickstart
     mkdir /cache/qcks 0770 system system
     chown system /dev/block/platform/msm_sdcc.1/by-name
-
-    # Permissions for mpdecision and thermald
-    mkdir /dev/socket/mpdecision 0770 system system
-    chmod 2770 /dev/socket/mpdecision
 
     setprop vold.post_fs_data_done 1
 
@@ -470,6 +467,12 @@ service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -w 1023 -t 4 -d /mnt/med
 
 on property:init.svc.wpa_supplicant=stopped
     stop dhcpcd
+
+service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
+    class main
+    user root
+    group root system
+    disabled
 
 service illumination /system/bin/illumination_service
     class main
