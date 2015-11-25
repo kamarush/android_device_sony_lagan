@@ -1,7 +1,7 @@
 #!/bin/sh
 set -x 
 
-CLEAN_HEADERS='../../../bionic/libc/kernel/tools/clean_header.py -k ../../../kernel/sony/yuga_aosp_kernel ../../../kernel/sony/yuga_aosp_kernel/include/linux/'
+CLEAN_HEADERS='../../../bionic/libc/kernel/tools/clean_header.py -k ../../../kernel/sony/yuga_aosp_kernel_lp ../../../kernel/sony/yuga_aosp_kernel_lp/include/linux/'
 
 mkdir -p kernel-headers/linux
 
