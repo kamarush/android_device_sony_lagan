@@ -468,7 +468,7 @@ service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -w 1023 -t 4 -d /mnt/med
 on property:init.svc.wpa_supplicant=stopped
     stop dhcpcd
 
-service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
+service mpdecision /system/bin/mpdecision --avg_comp
     class main
     user root
     group root system
