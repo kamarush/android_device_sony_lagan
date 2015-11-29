@@ -383,7 +383,7 @@ struct venc_capability{
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
 struct venc_entropycfg{
- unsigned long entropysel;
+ unsigned longentropysel;
  unsigned long cabacmodel;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
