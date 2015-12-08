@@ -270,12 +270,10 @@ static void dispatchNVWriteItem(Parcel &p, RequestInfo *pRI);
 static void dispatchUiccSubscripton(Parcel &p, RequestInfo *pRI);
 static void dispatchSimAuthentication(Parcel &p, RequestInfo *pRI);
 static void dispatchDataProfile(Parcel &p, RequestInfo *pRI);
-static void dispatchNetworkManual(Parcel& p, RequestInfo *pRI);
 static void dispatchRadioCapability(Parcel &p, RequestInfo *pRI);
 static int responseInts(Parcel &p, void *response, size_t responselen);
 static int responseFailCause(Parcel &p, void *response, size_t responselen);
 static int responseStrings(Parcel &p, void *response, size_t responselen);
-static int responseStringsDataRegistrationState(Parcel &p, void *response, size_t responselen);
 static int responseString(Parcel &p, void *response, size_t responselen);
 static int responseVoid(Parcel &p, void *response, size_t responselen);
 static int responseCallList(Parcel &p, void *response, size_t responselen);
@@ -571,7 +569,9 @@ dispatchString (Parcel& p, RequestInfo *pRI) {
     size_t datalen;
     size_t stringlen;
     char *string8 = NULL;
+    int rqn;
 
+    rqn = pRI->pCI->requestNumber;
     string8 = strdupReadString(p);
 
     startRequest;
@@ -581,6 +581,19 @@ dispatchString (Parcel& p, RequestInfo *pRI) {
 
     CALL_ONREQUEST(pRI->pCI->requestNumber, string8,
                        sizeof(char *), pRI, pRI->socket_id);
+
+    if (rqn == pRI->pCI->requestNumber) {
+        RLOGE("pabx: WARNING: qcomril did NOT handle request %d\n", rqn);
+        switch (rqn) {
+            case RIL_REQUEST_SIM_OPEN_CHANNEL:
+                RLOGE("pabx: sending error for SIM_OPEN_CHANNEL request\n");
+                RIL_onRequestComplete(pRI, RIL_E_GENERIC_FAILURE, NULL, 0); // required to trigger the SIM_READY / LOADED event in UiccCarrierPrivilegeRules.java
+                break;
+            default:
+                RLOGE("pabx: note: this error was not reported to the upper subsystem\n");
+        }
+    }
+
 
 #ifdef MEMSET_FREED
     memsetString(string8);
@@ -633,45 +646,6 @@ dispatchStrings (Parcel &p, RequestInfo *pRI) {
 
     if (pStrings != NULL) {
         for (int i = 0 ; i < countStrings ; i++) {
-#ifdef MEMSET_FREED
-            memsetString (pStrings[i]);
-#endif
-            free(pStrings[i]);
-        }
-
-#ifdef MEMSET_FREED
-        memset(pStrings, 0, datalen);
-#endif
-    }
-
-    return;
-invalid:
-    invalidCommandBlock(pRI);
-    return;
-}
-
-/** Callee expects const char * */
-static void
-dispatchNetworkManual (Parcel& p, RequestInfo *pRI) {
-    status_t status;
-    size_t datalen;
-    char **pStrings;
-
-    datalen = sizeof(char *) * 2;
-
-    startRequest;
-    pStrings = (char **)alloca(datalen);
-
-    pStrings[0] = strdupReadString(p);
-    appendPrintBuf("%s%s,", printBuf, pStrings[0]);
-    pStrings[1] = strdup("NOCHANGE");
-    closeRequest;
-    printRequest(pRI->token, pRI->pCI->requestNumber);
-
-    s_callbacks.onRequest(pRI->pCI->requestNumber, pStrings, datalen, pRI);
-
-    if (pStrings != NULL) {
-        for (int i = 0 ; i < 2 ; i++) {
 #ifdef MEMSET_FREED
             memsetString (pStrings[i]);
 #endif
@@ -2289,37 +2263,6 @@ static int responseStrings(Parcel &p, void *response, size_t responselen) {
     return 0;
 }
 
-/*
- * RIL_RADIO_TECHNOLOGY: 19 (QCOM HSPAP_DC) ==> 30 (CM DCHSPAP)
- */
-static int responseStringsDataRegistrationState(Parcel &p, void *response, size_t responselen) {
-
-    if (response == NULL && responselen != 0) {
-        ALOGE("invalid response: NULL");
-        return RIL_ERRNO_INVALID_RESPONSE;
-    }
-    if (responselen % sizeof(char *) != 0) {
-        ALOGE("invalid response length %d expected multiple of %d\n",
-            (int)responselen, (int)sizeof(char *));
-        return RIL_ERRNO_INVALID_RESPONSE;
-    }
-
-    char **p_cur = (char **) response;
-
-    if (p_cur[3] != NULL) {
-#ifdef RIL_LEGACY_PAP
-        if (strncmp(p_cur[3], "18", 2) == 0) {
-            ALOGE("DATA_REGISTRATION_STATE: stock radioTechnology=18 (QCOM HSPAP_DC) -> CyanogenMod radioTechnology=30 (CM DCHSPAP)");
-#else
-        if (strncmp(p_cur[3], "19", 2) == 0) {
-            ALOGE("DATA_REGISTRATION_STATE: stock radioTechnology=19 (QCOM HSPAP_DC) -> CyanogenMod radioTechnology=30 (CM DCHSPAP)");
-#endif
-            strncpy(p_cur[3], "15", 2);
-        }
-    }
-
-    return responseStrings(p, response, responselen);
-}
 
 /**
  * NULL strings are accepted
@@ -2967,6 +2910,9 @@ static int responseCdmaInformationRecords(Parcel &p,
 
 static int responseRilSignalStrength(Parcel &p,
                     void *response, size_t responselen) {
+
+    float qc_sq = 0;
+
     if (response == NULL && responselen != 0) {
         RLOGE("invalid response: NULL");
         return RIL_ERRNO_INVALID_RESPONSE;
@@ -3009,6 +2955,16 @@ static int responseRilSignalStrength(Parcel &p,
                     p_cur->LTE_SignalStrength.cqi = INT_MAX;
                 }
             }
+
+            // Qcoms RIL reports the raw lte value (75..120dbM)
+            // but android expects 44..140dbM
+            qc_sq = (120 - p_cur->LTE_SignalStrength.signalStrength) * 2.22; // signal quality in percent: 0..100
+            if (qc_sq >= 0 && qc_sq <= 100) {
+                p_cur->LTE_SignalStrength.signalStrength = (qc_sq/3.2); // percent to 0..31 range
+                p_cur->LTE_SignalStrength.rsrp = 140-(qc_sq*0.96);      // 44 <-> 140dBm range
+            }
+            //RLOGI("pabx: reporting qc_sq=%.2f, ss=%d, rsrp=%d\n", qc_sq, p_cur->LTE_SignalStrength.signalStrength, p_cur->LTE_SignalStrength.
+
             p.writeInt32(p_cur->LTE_SignalStrength.signalStrength);
             p.writeInt32(p_cur->LTE_SignalStrength.rsrp);
             p.writeInt32(p_cur->LTE_SignalStrength.rsrq);

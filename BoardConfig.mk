@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-PRODUCT_VENDOR_KERNEL_HEADERS := device/sony/lagan/kernel-headers
-
 # Include path
 TARGET_SPECIFIC_HEADER_PATH += device/sony/lagan/include
 
@@ -46,6 +44,11 @@ TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 131072
 TARGET_SYSTEM_PROP := device/sony/lagan/system.prop
+
+TARGET_KERNEL_SOURCE  := kernel/sony/apq8064
+TARGET_KERNEL_CONFIG := aosp_fusion3_yuga_defconfig
+KERNEL_TOOLCHAIN_PREFIX := arm-eabi-
+KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_OS)-x86/arm/arm-eabi-4.8/bin
 
 # Vold
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/msm_hsusb/gadget/lun%d/file

@@ -31,10 +31,6 @@ endif
 LOCAL_C_INCLUDES += $(TARGET_OUT_HEADER)/librilutils
 LOCAL_C_INCLUDES += external/nanopb-c
 
-ifeq ($(BOARD_HAS_RIL_LEGACY_PAP),true)
-    LOCAL_CFLAGS += -DRIL_LEGACY_PAP
-endif
-
 LOCAL_MODULE:= libril
 
 LOCAL_COPY_HEADERS_TO := libril
