@@ -122,7 +122,7 @@ USE_MINIKIN := true
 
 # RIL
 BOARD_PROVIDES_LIBRIL := true
-BOARD_RIL_CLASS := ../../../device/sony/lagan/ril/
+#BOARD_RIL_CLASS := ../../../device/sony/lagan/ril/
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk

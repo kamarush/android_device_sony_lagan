@@ -232,7 +232,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.telephony.ril_class=SonyRIL
+    ro.ril.telephony.mqanelements=5
 
 # Additional sbin stuff
 PRODUCT_COPY_FILES += \
