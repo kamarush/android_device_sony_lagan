@@ -7,7 +7,7 @@ include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES:= \
     ril.cpp \
-    ril_event.cpp\
+    ril_event.cpp \
     RilSocket.cpp \
     RilSapSocket.cpp \
 
@@ -31,32 +31,14 @@ endif
 LOCAL_C_INCLUDES += $(TARGET_OUT_HEADER)/librilutils
 LOCAL_C_INCLUDES += external/nanopb-c
 
+ifeq ($(BOARD_HAS_RIL_LEGACY_PAP),true)
+    LOCAL_CFLAGS += -DRIL_LEGACY_PAP
+endif
+
 LOCAL_MODULE:= libril
 
 LOCAL_COPY_HEADERS_TO := libril
 LOCAL_COPY_HEADERS := ril_ex.h
 
 include $(BUILD_SHARED_LIBRARY)
-
-
-# For RdoServD which needs a static library
-# =========================================
-ifneq ($(ANDROID_BIONIC_TRANSITION),)
-include $(CLEAR_VARS)
-
-LOCAL_SRC_FILES:= \
-    ril.cpp
-
-LOCAL_STATIC_LIBRARIES := \
-    libutils_static \
-    libcutils \
-    librilutils_static \
-    libprotobuf-c-nano-enable_malloc
-
-LOCAL_CFLAGS :=
-
-LOCAL_MODULE:= libril_static
-
-include $(BUILD_STATIC_LIBRARY)
-endif # ANDROID_BIONIC_TRANSITION
 endif # BOARD_PROVIDES_LIBRIL
